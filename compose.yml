@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  proxy:
+    build:
+      context: proxy
+      dockerfile: dockerfile
+    networks:
+      - net1
+
+  vhost1:
+    container_name: vhost1
+    command: sleep infinity
+    build:
+      context: ./vhost1
+      dockerfile: dockerfile
+    volumes:
+      - ./vhost1:/var/www/html
+    networks:
+      - net1
+      - net3
+  
+  vhost2:
+    container_name: vhost2
+    command: sleep infinity
+    build:
+      context: ./vhost2
+      dockerfile: dockerfile
+    networks:
+      - net2
+
+  database:
+    container_name: database
+    command: sleep infinity
+    build: 
+      context: ./database
+      dockerfile: Dockerfile
+    networks: 
+      - net3
+
+
+  startup:
+    container_name: startup
+    build: 
+      context: ./startup
+      dockerfile: dockerfileockerfile
+    command: ansible-playbook /opt/playbook.yml
+    volumes:
+      - ./startup:/opt
+      - //var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - vhost1
+      - vhost2
+      - database
+      - proxy
+    networks:
+      - net1
+      - net2
+      - net3
+
+networks:
+  net1:
+  net2:
+  net3:

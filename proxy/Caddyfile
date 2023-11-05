@@ -1,0 +1,17 @@
+{
+        auto_https off
+}
+
+http://vhost1.localhost {
+        basicauth {
+                user1 JDJhJDE0JEJPbEl5QUQxYU90SGZOTkF3YlV0YmVVd05zZWlaekR5eEpzd2ZZZ1pTNkhmcFg1VHN5MzV5
+        }
+        reverse_proxy vhost1:80
+}
+
+http://vhost2.localhost {
+        basicauth {
+                user2 JDJhJDE0JFVqUHUvT0RpWVBSaEJSZzNFVzBTUE9EQzU2ZHhmclI4STBPSC96ZXdlTU1jTGRTUFNiNXEu
+        }
+        reverse_proxy vhost2:80
+}
